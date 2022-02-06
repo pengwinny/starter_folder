@@ -1,12 +1,10 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Paper 1 [working title]"
 author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
+  - Winny Peng
+thanks: "Code and data are available at: https://github.com/pengwinny/starter_folder."
 date: "`r format(Sys.time(), '%d %B %Y')`"
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "First sentence is super broad and motivational. Second sentence is more specific on what I did. Third sentence. Fourth sentence is something about our findings."
 output:
   bookdown::pdf_document2
 toc: FALSE
@@ -22,11 +20,44 @@ library(palmerpenguins)
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. For instance, Section \@ref(data). R Markdown automatically makes the sections lower case and adds a dash to spaces to generate labels, for instance, Section \@ref(first-discussion-point). 
+First paragraph is first sentence from abstract but add more water.
+
+Second paragraph is about what was done and what was found.
+
+Third paragraph is about implications (final sentence but add water)
+
+The remainder of this paper is: Section \@ref(data) explains the data. Section /a@ref(results) covers results ...
 
 
 
 # Data
+
+Paragraph or two introducing the dataset broadly.
+
+Then show an extract of the dataset (Table /@ref(tab:dataextract).
+
+```{r dataextract}
+library(tidyverse)
+library(knitr)
+
+toronto_poll_data <- read_csv(here::here("inputs/data/toronto_poll_data.csv"))
+
+toronto_poll_data |> 
+  select(POLL_RESULT, RESPONSE_RATE_MET) |> 
+  slice(1:10) |> 
+  kable(
+    caption = "First ten rows of a dataset of economic indicators for 
+    Australia, Ethiopia, India, and the US",
+    col.names = c("Poll Result", "Response Rate"),
+    digits = 1,
+    booktabs = TRUE,
+    linesep = ""
+  )
+```
+
+Paragraph or two more about Table.
+
+
 
 Our data is of penguins (Figure \@ref(fig:bills)).
 
