@@ -11,13 +11,6 @@ toc: FALSE
 bibliography: references.bib
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-
-library(tidyverse)
-library(palmerpenguins)
-```
-
 # Introduction
 
 First paragraph is first sentence from abstract but add more water.
@@ -26,26 +19,26 @@ Second paragraph is about what was done and what was found.
 
 Third paragraph is about implications (final sentence but add water)
 
-The remainder of this paper is: Section \@ref(data) explains the data. Section /a@ref(results) covers results ...
-
+The remainder of this paper is: Section \@ref(data) explains the data. Section \@ref(results) covers results ...
 
 
 # Data
 
-Paragraph or two introducing the dataset broadly.
+Paragraph or two introducing the data set broadly. We obtain our data set from the City of Toronto open Data Portal, using the `opentorontodata` package [@citeopendatatoronto] and the statistical programming language R [@citeR].
 
-Then show an extract of the dataset (Table /@ref(tab:dataextract).
+Then show an extract of the data set (Table \@ref(tab:dataextract).
 
-```{r dataextract}
+```{r dataextract, echo=FALSE}
 library(tidyverse)
 library(knitr)
 
 toronto_poll_data <- read_csv(here::here("inputs/data/toronto_poll_data.csv"))
 
 toronto_poll_data |> 
-  select(POLL_RESULT, RESPONSE_RATE_MET) |> 
+  select(POLL_RESULT, RESPONSE_RATE_MET,) |> 
   slice(1:10) |> 
   kable(
+    show_col_types = FALSE,
     caption = "First ten rows of a dataset of economic indicators for 
     Australia, Ethiopia, India, and the US",
     col.names = c("Poll Result", "Response Rate"),
@@ -57,35 +50,22 @@ toronto_poll_data |>
 
 Paragraph or two more about Table.
 
+We are interested in the relationship between A and B.
 
-
-Our data is of penguins (Figure \@ref(fig:bills)).
-
-```{r bills, fig.cap="Bills of penguins", echo = FALSE}
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = FALSE) +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
+```{r bargraph, echo=FALSE}
+toronto_poll_data |> 
+  ggplot(mapping = aes(x = BALLOTS_NEEDED_TO_PROCEED, fill = POLL_RESULT)) +
+  geom_bar() +
+  theme_classic()
 ```
+
+Figure X shows the relationship between Y and Z.
 
 Talk more about it.
 
-Also bills and their average (Figure \@ref(fig:billssssss)). (Notice how you can change the height and width so they don't take the whole page?)
+Also bills and their average. (Notice how you can change the height and width so they don't take the whole page?)
 
-```{r billssssss, fig.cap="More bills of penguins", echo = FALSE, fig.width=8, fig.height=4}
-
-# This needs to be about the random data tha tI sasmpled?
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = FALSE) +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
-```
+# {r billssssss, fig.cap="More bills of penguins", echo = FALSE, fig.width=8, fig.height=4}
 
 Talk way more about it. 
 
@@ -99,28 +79,10 @@ Pr(\theta | y) = \frac{Pr(y | \theta) Pr(\theta)}{Pr(y)}  (\#eq:bayes)
 
 Equation \@ref(eq:bayes) seems useful, eh?
 
-Here's a dumb example of how to use some references: In paper we run our analysis in `R` [@citeR]. We also use the `tidyverse` which was written by @thereferencecanbewhatever If we were interested in baseball data then @citeLahman could be useful. 
-
 We can use maths by including latex between dollar signs, for instance $\theta$.
 
 
 # Results
-
-# Discussion
-
-## First discussion point
-
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
-
-## Second discussion point
-
-## Third discussion point
-
-## Weaknesses and next steps
-
-Weaknesses and next steps should also be included.
-
-\newpage
 
 \appendix
 
