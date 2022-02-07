@@ -4,7 +4,7 @@ author:
   - Winny Peng
 thanks: "Code and data are available at: https://github.com/pengwinny/starter_folder."
 date: "`r format(Sys.time(), '%d %B %Y')`"
-abstract: "In Toronto, before a neighbourhood change application can be processed for consideration, the city must first consult the opinions of property owners, residents and businesses from the affected area via polls. Regardless of whether changes are good or bad, it is important to know which types of neighbourhood modifications resident stakeholders are most resistant to. In this particular analysis, we gathered polling data from the City of Toronto Open Portal to examine which types of neighbourhood change receive lower response rates. Interestingly enough, it appears that Torontonians are very passionate about parking but less eager about traffic changes."
+abstract: "In Toronto, before a neighbourhood change application can be processed for consideration, the city must first consult the opinions of property owners, residents and businesses from the affected area via polls. Regardless of whether changes are good or bad, it is important to know which types of neighbourhood modifications resident stakeholders are most resistant to. In this particular analysis, we gathered polling data from the City of Toronto Open Data Portal to examine which types of neighbourhood change receive lower response rates. Interestingly enough, it appears that Torontonians are very passionate about parking but less eager about traffic changes."
 output:
   bookdown::pdf_document2
 toc: FALSE
@@ -15,7 +15,7 @@ bibliography: references.bib
 
 In Toronto, before a neighbourhood change application can be processed for consideration, the city must first consult the opinions of property owners, residents and businesses from the affected area via polls. Regardless of whether changes are good or bad, it is important to know which types of neighbourhood modifications resident stakeholders are most resistant to. Knowing which polls receive low response rates can help the city determine which sectors may require more persuasive messaging than others. Lower response rates may also be an indication of low interest, indifference, or even resistance to particular neighbourhood changes. The benefit of analyzing poll response rates will be beneficial to improving the infrastructure for the city of Toronto.
 
-In this particular analysis, we gathered polling data from the City of Toronto Open Portal to examine which types of neighbourhood change receive lower response rates. The polls are conducted by the City Clerk's Office on behalf of the city divisions. In particular, these polls focus on changes involving sidewalk cafes, off-street parking, permit parking, traffic calming, and business improvement areas. In order for an application to be voted "in favour", specific benchmarks must be met; in addition to poll results, each poll needs to meet a percentage of returned ballots to be considered valid. These response rates are the variables of interest in order to examine which neighbourhood changes may require more attention.
+In this particular analysis, we gathered polling data from the City of Toronto Open Data Portal to examine which types of neighbourhood change receive lower response rates. The polls are conducted by the City Clerk's Office on behalf of the city divisions. In particular, these polls focus on changes involving sidewalk cafes, off-street parking, permit parking, traffic calming, and business improvement areas. In order for an application to be voted "in favour", specific benchmarks must be met; in addition to poll results, each poll needs to meet a percentage of returned ballots to be considered valid. These response rates are the variables of interest in order to examine which neighbourhood changes may require more attention.
 
 Interestingly enough, based on our collected polling data, it appears that Torontonians are very passionate about parking but less eager about traffic changes. Front yard parking has the most amount of polls conducted, with its response rate threshold being met almost every time. Similarly, almost each poll in regards to front yard parking ended with an "in favour" verdict. It is also important to note that the second most polls conducted are in regards to appealing front yard parking changes. With such high engagement in front yard parking, it is shocking to see that traffic calming, a change that most would assume to be important to residents, fails to meet its response rate threshold more than half the time, resulting in its applications to be automatically removed from the approval process. Although the reasons for these discreptancies cannot be shown through this analysis, it is clear that more investigation must be made to figure out why there is such high variance in polling engagement between the two topics. 
 
@@ -23,66 +23,63 @@ The remainder of this paper will go through the analysis process as follows: Sec
 
 # Data
 
-Paragraph or two introducing the data set broadly. We obtain our data set from the City of Toronto open Data Portal, using the `opentorontodata` package [@citeopendatatoronto] and the statistical programming language R [@citeR].
+The polling data set [@pollingdataset] was obtained from the Open Data Toronto using the `opentorontodata` package [@citeopendatatoronto]. The primary data found in this data set is poll engagement and ballot information. We used the statistical programming language R [@citeR] to visualize the data collected, along with [@knitr], [@tidyverse], and [@ggplot]. A sample of the data set is shown in (Table \@ref(tab:dataextract)). For the purpose of this analysis, we are only focused on the whether response rate threshold is met for each type of poll and their final result.
 
-Then show an extract of the data set (Table \@ref(tab:dataextract).
+There are ten types of polls (Figure \@ref(fig:responserate)), each one specifying a paritcular category of neighbourhood change proposal. The response rate is considered to be met if and only if the number of ballots returned has met the required response rate set by the city. Furthermore, polls can only end in three results: in favour, opposed, or response rate not met. In both the second and third case, the application will be removed from the approval process.  
 
-```{r dataextract, echo=FALSE, warning=FALSE, message=FALSE}
+In order for any particular poll to be considered valid, it must first meet certain benchmarks. In this data set, there were three benchmarks noted: (1) 50% + 1 of received ballots, (2) 50% of received ballots, and (3) 60% of received ballots. Each pass rate specifies the number of returned ballots needed for a poll to proceed to the next step. 
+
+```{r dataextract, fig.cap="Data Sample", echo=FALSE, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(knitr)
 
 toronto_poll_data <- read_csv(here::here("inputs/data/toronto_poll_data.csv"))
 
 toronto_poll_data |> 
-  select(RESPONSE_RATE_MET, APPLICATION_FOR,) |> 
+  select(APPLICATION_FOR, RESPONSE_RATE_MET, POLL_RESULT,) |> 
   slice(1:10) |> 
   kable(
-    caption = "First ten rows of a dataset of economic indicators for 
-    Australia, Ethiopia, India, and the US",
-    col.names = c("Response Rate Met", "Poll Type"),
+    caption = "The first ten rows of our data set containing polling information in Toronto.",
+    col.names = c("Poll Type", "Response Rate Met", "Poll Result"),
     digits = 1,
     booktabs = TRUE,
     linesep = ""
   )
 ```
 
-Paragraph or two more about Table.
+# Results
 
-We are interested in the relationship between A and B.
-
-```{r bargrapha, echo=FALSE}
+```{r responserate, fig.cap="Poll Type and Response Rate", echo=FALSE, warning=FALSE, message=FALSE}
 toronto_poll_data |> 
   ggplot(mapping = aes(y = APPLICATION_FOR, fill = RESPONSE_RATE_MET)) +
   geom_bar(position = "dodge") +
   theme(axis.text.x = element_text(angle = 90)) +
-  labs(x = "Number of times response rate is met",
+  labs(x = "Number of polls",
        y = "Application type",
        fill = "Response Rate Met",
-       title = "Application types and their response rates.") +
+       title = "Poll types and their response rates.") +
   theme_classic()
 ```
 
-Figure X shows the relationship between Y and Z.
+The section of interest in this data set is the poll type and response rate; in other words, we want to look at the amount of times each poll in a specific category has met the response rate to be considered valid. (Figure \@ref(fig:responserate)) shows the results of comparing each poll type to their response rates. 
 
-```{r bargraph, echo=FALSE}
+In (Figure \@ref(fig:responserate)), it is clear that for the majority of each poll type, the response rate threshhold has been met, with one exception. The poll category of traffic calming is the only category who fails to meet its target response rate more than 50% of the time. This result is concerning because it means stakeholder residents who meet the criteria for voting, are not returning their ballots to vote for neighbourhood changes regarding traffic calming. Although the reasons for this conclusion cannot be determined by the data set alone, it is something that ought to be explored in detail. 
+
+On the other hand, the most number of polls are all related to front yard parking. Not only does this category have the most number of polls, but the response rate has been met almost every time. Again, although we can only speculate on the many factors that affected the large engagement for this category, it is clear that Torontonians are more engaged in front yard parking than any other neighbourhood development. Many factors can result in the high engagement, such as high publicity or more persusassive polling messaging. 
+
+
+```{r pollresults, fig.cap="Poll Type and Result", echo=FALSE, warning=FALSE, message=FALSE}
 toronto_poll_data |> 
   ggplot(mapping = aes(y = APPLICATION_FOR, fill = POLL_RESULT)) +
   geom_bar(position = "dodge") +
   theme(axis.text.x = element_text(angle = 90)) +
-  labs(x = "Number of times response rate is met",
+  labs(x = "Number of polls",
        y = "Application type",
-       fill = "Response Rate Met",
-       title = "Application types and their response rates.") +
+       fill = "Polling Results",
+       title = "Polling results by type.") +
   theme_classic()
 ```
-
-Talk more about it.
-
-Also bills and their average. (Notice how you can change the height and width so they don't take the whole page?)
-
-Talk way more about it. 
-
-# Results
+(Figure \@ref(fig:pollresults)) shows a similar gap between front yard parking and the rest of the polling categories in terms of results: most polls end with an affirmative action. However, it is interesting to note that front yard parking appeals also have high number of polls being conducted. Although there is no details on the specifics of each poll, having high amounts of applications and appeals, in comparison to other cateogories, shows the undisputed high engagement for front yard parking.  
 
 
 \newpage
