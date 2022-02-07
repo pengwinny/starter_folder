@@ -4,7 +4,7 @@ author:
   - Winny Peng
 thanks: "Code and data are available at: https://github.com/pengwinny/starter_folder."
 date: "`r format(Sys.time(), '%d %B %Y')`"
-abstract: "First sentence is super broad and motivational. Second sentence is more specific on what I did. Third sentence. Fourth sentence is something about our findings."
+abstract: "In Toronto, before a neighbourhood change application can be processed for consideration, the city must first consult the opinions of property owners, residents and businesses from the affected area via polls. Regardless of whether changes are good or bad, it is important to know which types of neighbourhood modifications resident stakeholders are most resistant to. In this particular analysis, we gathered polling data from the City of Toronto Open Portal to examine which types of neighbourhood change receive lower response rates. Interestingly enough, it appears that Torontonians are very passionate about parking but less eager about traffic changes."
 output:
   bookdown::pdf_document2
 toc: FALSE
@@ -28,20 +28,19 @@ Paragraph or two introducing the data set broadly. We obtain our data set from t
 
 Then show an extract of the data set (Table \@ref(tab:dataextract).
 
-```{r dataextract, echo=FALSE}
+```{r dataextract, echo=FALSE, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(knitr)
 
 toronto_poll_data <- read_csv(here::here("inputs/data/toronto_poll_data.csv"))
 
 toronto_poll_data |> 
-  select(POLL_RESULT, RESPONSE_RATE_MET,) |> 
+  select(RESPONSE_RATE_MET, APPLICATION_FOR,) |> 
   slice(1:10) |> 
   kable(
-    show_col_types = FALSE,
     caption = "First ten rows of a dataset of economic indicators for 
     Australia, Ethiopia, India, and the US",
-    col.names = c("Poll Result", "Response Rate"),
+    col.names = c("Response Rate Met", "Poll Type"),
     digits = 1,
     booktabs = TRUE,
     linesep = ""
@@ -54,33 +53,35 @@ We are interested in the relationship between A and B.
 
 ```{r bargraph, echo=FALSE}
 toronto_poll_data |> 
-  ggplot(mapping = aes(x = BALLOTS_NEEDED_TO_PROCEED, fill = POLL_RESULT)) +
-  geom_bar() +
+  ggplot(mapping = aes(y = APPLICATION_FOR, fill = RESPONSE_RATE_MET)) +
+  geom_bar(position = "dodge") +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(x = "Number of times response rate is met",
+       y = "Application type",
+       fill = "Response Rate Met",
+       title = "Application types and their response rates.") +
   theme_classic()
 ```
 
 Figure X shows the relationship between Y and Z.
 
+```{r bargraph, echo=FALSE}
+toronto_poll_data |> 
+  ggplot(mapping = aes(y = APPLICATION_FOR, fill = POLL_RESULT)) +
+  geom_bar(position = "dodge") +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(x = "Number of times response rate is met",
+       y = "Application type",
+       fill = "Response Rate Met",
+       title = "Application types and their response rates.") +
+  theme_classic()
+```
+
 Talk more about it.
 
 Also bills and their average. (Notice how you can change the height and width so they don't take the whole page?)
 
-# {r billssssss, fig.cap="More bills of penguins", echo = FALSE, fig.width=8, fig.height=4}
-
 Talk way more about it. 
-
-
-
-# Model
-
-\begin{equation}
-Pr(\theta | y) = \frac{Pr(y | \theta) Pr(\theta)}{Pr(y)}  (\#eq:bayes)
-\end{equation}
-
-Equation \@ref(eq:bayes) seems useful, eh?
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
 
 # Results
 

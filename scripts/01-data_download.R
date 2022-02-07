@@ -1,6 +1,6 @@
 #### Preamble ####
 # Purpose: Download data form opendatatoronto.
-# Author: Winny
+# Author: Winny Peng
 # Data: 6 February 2022
 # Contact: winny.peng@mail.utoronto.ca
 # License: MIT
