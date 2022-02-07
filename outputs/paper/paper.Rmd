@@ -13,14 +13,13 @@ bibliography: references.bib
 
 # Introduction
 
-First paragraph is first sentence from abstract but add more water.
+In Toronto, before a neighbourhood change application can be processed for consideration, the city must first consult the opinions of property owners, residents and businesses from the affected area via polls. Regardless of whether changes are good or bad, it is important to know which types of neighbourhood modifications resident stakeholders are most resistant to. Knowing which polls receive low response rates can help the city determine which sectors may require more persuasive messaging than others. Lower response rates may also be an indication of low interest, indifference, or even resistance to particular neighbourhood changes. The benefit of analyzing poll response rates will be beneficial to improving the infrastructure for the city of Toronto.
 
-Second paragraph is about what was done and what was found.
+In this particular analysis, we gathered polling data from the City of Toronto Open Portal to examine which types of neighbourhood change receive lower response rates. The polls are conducted by the City Clerk's Office on behalf of the city divisions. In particular, these polls focus on changes involving sidewalk cafes, off-street parking, permit parking, traffic calming, and business improvement areas. In order for an application to be voted "in favour", specific benchmarks must be met; in addition to poll results, each poll needs to meet a percentage of returned ballots to be considered valid. These response rates are the variables of interest in order to examine which neighbourhood changes may require more attention.
 
-Third paragraph is about implications (final sentence but add water)
+Interestingly enough, based on our collected polling data, it appears that Torontonians are very passionate about parking but less eager about traffic changes. Front yard parking has the most amount of polls conducted, with its response rate threshold being met almost every time. Similarly, almost each poll in regards to front yard parking ended with an "in favour" verdict. It is also important to note that the second most polls conducted are in regards to appealing front yard parking changes. With such high engagement in front yard parking, it is shocking to see that traffic calming, a change that most would assume to be important to residents, fails to meet its response rate threshold more than half the time, resulting in its applications to be automatically removed from the approval process. Although the reasons for these discreptancies cannot be shown through this analysis, it is clear that more investigation must be made to figure out why there is such high variance in polling engagement between the two topics. 
 
-The remainder of this paper is: Section \@ref(data) explains the data. Section \@ref(results) covers results ...
-
+The remainder of this paper will go through the analysis process as follows: Section \@ref(data) explains the data collected and the process by which it was cleaned and analyzed. Section \@ref(results) covers the results of the findings and explores the different polling engagement rates for different developmental changes. 
 
 # Data
 
@@ -51,7 +50,7 @@ Paragraph or two more about Table.
 
 We are interested in the relationship between A and B.
 
-```{r bargraph, echo=FALSE}
+```{r bargrapha, echo=FALSE}
 toronto_poll_data |> 
   ggplot(mapping = aes(y = APPLICATION_FOR, fill = RESPONSE_RATE_MET)) +
   geom_bar(position = "dodge") +
@@ -84,13 +83,6 @@ Also bills and their average. (Notice how you can change the height and width so
 Talk way more about it. 
 
 # Results
-
-\appendix
-
-# Appendix {-}
-
-
-# Additional details
 
 
 \newpage
